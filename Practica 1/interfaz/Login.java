@@ -22,7 +22,7 @@ import javax.swing.JOptionPane;
  */
 /**
  *
- * @author beatl
+ * @author Jorge Iván Pérez Pérez
  */
 public class Login extends javax.swing.JFrame {
 
@@ -155,7 +155,14 @@ public class Login extends javax.swing.JFrame {
         String username = nomUserInicio.getText();
         String password = new String(pswInicio.getPassword());
         try{
-        this.sendGet(username, password);
+              if (username.contains(" ")) {
+                JOptionPane.showMessageDialog(null, "El nombre de usuario no puede tener espacios.");
+            } else if (username.equals("") || password.equals("")) {
+                JOptionPane.showMessageDialog(null, "No puedes dejar espacios en blanco.");
+            } else {
+               this.sendGet(username, password);
+            }
+        
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Nombre de usuario o password incorrecto. Verifica que la informacion que ingresaste es correcta o si no estas registrado Registrate!!");
             Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
@@ -234,10 +241,10 @@ public class Login extends javax.swing.JFrame {
             Home h = new Home(respuesta,user);
             h.setVisible(true);
             this.dispose();
-        }else if(responseCode == 401){
-            JOptionPane.showMessageDialog(null, "Datos Incorrectos.");
-        }else if(responseCode == 200){
-            JOptionPane.showMessageDialog(null, "Ingresa tu nnombre de usuario o password.");
+        }else if(responseCode == 404){
+            JOptionPane.showMessageDialog(null, "Nombre de usuario o password incorrecto. Verifica que la informacion que ingresaste es correcta o si no estas registrado Registrate!!");
+        }else if(responseCode == 412){
+            JOptionPane.showMessageDialog(null, "Ingresa tu nombre de usuario o password.");
         } 
 
     }
@@ -250,7 +257,7 @@ public class Login extends javax.swing.JFrame {
             while ((line = in.readLine()) != null) {
                 response.append(line);
             }
-            System.out.println(response.toString()+" este es el token");
+            System.out.println(response.toString());
             return response.toString();
 
         } catch (IOException e) {

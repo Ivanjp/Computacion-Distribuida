@@ -24,7 +24,7 @@ import javax.swing.table.DefaultTableModel;
  */
 /**
  *
- * @author beatl
+ * @author Jorge Iván Pérez Pérez
  */
 public class Home extends javax.swing.JFrame {
 
@@ -203,7 +203,7 @@ public class Home extends javax.swing.JFrame {
         jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel17.setText("Tipo de Carrera");
 
-        registroTipoCarrera.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Caminata", "Sprint", "medio-fondo", "fondo" }));
+        registroTipoCarrera.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Caminata", "Sprint", "Medio-Fondo", "Fondo" }));
 
         jLabel18.setFont(new java.awt.Font("Microsoft JhengHei", 1, 14)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(255, 255, 255));
@@ -412,7 +412,7 @@ public class Home extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Tipo de Carrera");
 
-        botonTipoCarGlob.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Caminata", "Sprint", "Medio - Fondo", "Fondo" }));
+        botonTipoCarGlob.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Caminata", "Sprint", "Medio-Fondo", "Fondo" }));
         botonTipoCarGlob.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botonTipoCarGlobActionPerformed(evt);
@@ -441,7 +441,7 @@ public class Home extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addGap(0, 30, Short.MAX_VALUE)
+                        .addGap(0, 36, Short.MAX_VALUE)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnconsultaG)
                             .addComponent(botonTipoCarGlob, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))

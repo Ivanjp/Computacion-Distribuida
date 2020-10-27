@@ -6,7 +6,7 @@
 
 /**
  *
- * @author beatl
+ * @author Jorge Ivan Perez Perez
  */
 import java.io.InputStream;
 import java.io.InputStreamReader;

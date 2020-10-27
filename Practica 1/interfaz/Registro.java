@@ -20,7 +20,7 @@ import javax.swing.UIManager;
  */
 /**
  *
- * @author beatl
+ * @author Jorge Iván Pérez Pérez
  */
 public class Registro extends javax.swing.JFrame {
 
@@ -235,6 +235,7 @@ public class Registro extends javax.swing.JFrame {
 
     private void sHombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sHombreActionPerformed
         // TODO add your handling code here:
+        //Eliminar
     }//GEN-LAST:event_sHombreActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
