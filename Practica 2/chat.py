@@ -33,7 +33,8 @@ class Chat:
             
             self.ch_client = True
         except:
-            print("Canal no activo, intenta mas tarde")    
+            print("Canal no activo, intenta mas tarde")
+            self.flagList = False    
 
     def espera_servidor(self,op):
         if op:
@@ -71,6 +72,7 @@ class Chat:
                     print("NO puedes cambiar de nombre mientras chateas")
             elif comando.startswith("@conecta"):
                 if not self.ch_client and not self.ch_server:
+                    self.flagList = False
 
                     p = ""
                     for n in self.listaC:
@@ -101,7 +103,7 @@ class Chat:
             elif comando.startswith("@desconecta"):
                 if not self.ch_client and not self.ch_server:
                     print("> No hay nunguna conexion")
-                    continue
+
                 print("> Saliste de la conexion") 
                 
                 if self.flagList == False:
@@ -164,6 +166,4 @@ class Chat:
         threading.Thread(target=self.espera_servidor,args=(True,)).start()
         self.entrada()
                         
-
-Chat(int(sys.argv[1])).run()                
-                                    
+Chat(int(sys.argv[1])).run()  
