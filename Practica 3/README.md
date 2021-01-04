@@ -2,25 +2,24 @@
 Diccionario
 
 ## Requerimientos
-`Python 3` `Docker CE`
+`Python 3` `PostgresSQL`
 
 ## Modo de Uso
-### Iniciar el contenedor
+### Crear Base de Datos
 
-1. Tener el servicio de `Docker CE` iniciado
-2. Abrir una terminal y ubicarse en la carpeta donde se clono este repositorio  
-3. Una vez estando posicionado en la carepta ejecuta el siguiente comando **`docker-compose up --build`**.  
-Al ejecutarlo se iniciara la imagen que contiene `Python` en el cual esta el servidor asi como el servicio de la Base de Datos de `Postgres`.
+1. Tener el servicio de `PostgresSQL` iniciado
+2. Crear la base de datos con el script que se encuentra en la carpeta sql.  
+3. Cambiar el nombre de usuario, nombre de la base de datos y la contraseña en el archivo servidor.py 
+4. Tener intalado _psycopg2_ , para instalarlo poner el siguiente comando: `pip install psycopg2`
 
 ### Iniciar la aplicación
 
-## Notas
-Los comandos disponibles dentro de la aplicacion son:
-* `@conecta XXXX o @conecta name` donde **XXXX** es algún puerto al que se quiera conectar o **name** el nombre de algún contacto. Si no
-se encuentra **name** en la lista de contactos se mandara un aviso, si **XXXX** no esta activo también se mandara un aviso.
-* `@chname name`Comando para cambiar tu nombre de usuario predeterminado por otro diferente.
-* `@desconecta`Comando para desconectarse del chat que tenemos activo.
-* `@contactos`Comando para poder ver la lista de contactos.
-* `@salir`Comando para salir de la aplicación.
+Para iniciar el programa hay que seguir los siguientes pasos:
+
+1. Abrir una terminal, ubicarse en la carpeta del proyecto y ejecutar el siguiente comando _python par.py puerto1 puerto2 puerto3 op1 op2_, donde los 3 puertos tienen que ser diferentes y op1 es  y op2 es, Ejemplo.
+2.Abrir otra terminal y hacer lo mismo del paso anterior solo que
+3.Abrir otra terminal, ubicarse en la carpeta del proyecto y correr el siguiente comando: _python servidor.py puerto1_
+4. Una vez hecho esto en la terminal donde ejecutamos el archivo **servidor.py** nos aparecera un menu con 5 opciones (agregar palabra, editar significado, buscar una palabra, ver todo el diccionario y salir), seleccionar alguna de las opciones y seguir las instrucciones que se soliciten.
+
 
 
