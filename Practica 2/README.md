@@ -1,38 +1,21 @@
-# Práctica 1 Aplicación distribuida: cliente/servidor
-Aplicación de registros de corredores de atletismo.
+# Práctica 2 Aplicación distribuida: peer to peer
+Chat
 
 ## Requerimientos
-`Java 8/11` y `Docker CE`
+`Python 3`
 
 ## Modo de Uso
-### Iniciar el contenedor
-
-1. Tener el servicio de `Docker CE` iniciado
-2. Abrir una terminal y ubicarse en la carpeta donde se clono este repositorio  
-3. Una vez estando posicionado en la carepta ejecuta el siguiente comando **`docker-compose up --build`**.  
-Al ejecutarlo se iniciara la imagen que contiene `openjdk 8` en el cual esta el servidor asi como el servicio de la Base de Datos de `Postgres`.
-
-### Iniciar la aplicación
-
-1. Abrir otra terminal y ubicarse en la carpeta _Interfaz_ todo esto se encuentra en la carpeta donde se clono el repositorio.
-2. Compilar los 3 archivos de `Java` con **`javac *.java`**
-3. Ejecutar el archivo _Login_ con **`java Login`**
-4. Una vez dentro de la aplicación se mostrará la pantalla de Inicio de Sesión, ahí podrás ingresar con alguno de los siguientes usuarios:  
-
-   - **`Username`** : Ivan  **`Password`**: password
-   - **`Username`** : Monica  **`Password`**: moniquinha26
-   - **`Username`** : Elizabeth  **`Password`**: qwerty12
-   - **`Username`** : Paul  **`Password`**: 543210
-   - **`Username`** : Gabriel  **`Password`**: aphelios23
-   - **`Username`** : Maite  **`Password`**: sirenita  
-   
-5. Si no quieres utilizar los usuarios de prueba, crea el tuyo, presiona el botón **`Registrarse`** que se encuentra en la parte inferior izquierda y llena los datos que se te piden
-**NOTA** si no modificas los valores de reisdencia y de edad se pondrá por default los valores que se muestran.
+* Abrir una terminal y ubicarse en la carpeta donde se clono este repositorio.
+* Correr el programa con el comando `python3 chat.py XXXX` donde **XXXX** representa el puerto donde se estará conectado.
 
 ## Notas
-* Para detener el contenedor ejecuta el siguiente comando **`docker-compose down`**.
-* Para cerrar la aplicación basta con darle al botón de cerrar ❌
-* Para poder observar como funciona la expiración del `JWT` se tiene configurado por default que expire en 1 minuto, despues de ese minuto ya no podras realizar
-ninguna actividad dentro de la aplicación y se te redireccionará a la pantalla de Inicio de Sesión. Si quieres cambiarlo modifica el archivo `Handler.java`que se ubica en
-la carpeta `_Practica1/cliente_servidor/src/Handler.java_`. Para ver los cambios tendras que volver a compilar los archivos `Java` antes mencionados y volver a iniciar
-el contenedor.
+Los comandos disponibles dentro de la aplicacion son:
+* `@conecta XXXX o @conecta name` donde **XXXX** es algún puerto al que se quiera conectar o **name** el nombre de algún contacto. Si no
+se encuentra **name** en la lista de contactos se mandara un aviso, si **XXXX** no esta activo también se mandara un aviso.
+* `@chname name`Comando para cambiar tu nombre de usuario predeterminado por otro diferente.
+* `@desconecta`Comando para desconectarse del chat que tenemos activo.
+* `@contactos`Comando para poder ver la lista de contactos.
+* `@salir`Comando para salir de la aplicación.
+
+## Reglas de Comandos ##
+Si hay un chat activo el único comando disponible es `@desconecta`los demás estarán disponibles una vez finalice el chat. 

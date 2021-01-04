@@ -119,6 +119,13 @@ class Chat:
             elif comando.startswith("@salir"):
                 if not self.ch_client and not self.ch_server:
                     print("> Hasta luego") 
+<<<<<<< HEAD
+=======
+                    t1 = threading.Thread(target=self.espera_servidor,args=(False,))
+                    t1.daemon = True
+                    t1.start() 
+                    time.sleep(2)  
+>>>>>>> d77abcd894317d0432dbcce3f1cd02dc14a6e6c8
                     self.socket_server.close()
                     os._exit(1)
                 else:
@@ -166,5 +173,8 @@ class Chat:
         threading.Thread(target=self.espera_servidor,args=(True,)).start()
         self.entrada()
                         
+<<<<<<< HEAD
 
+=======
+>>>>>>> d77abcd894317d0432dbcce3f1cd02dc14a6e6c8
 Chat(int(sys.argv[1])).run()  
