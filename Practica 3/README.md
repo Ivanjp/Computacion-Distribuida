@@ -1,12 +1,18 @@
-# Práctica 2 Aplicación distribuida: peer to peer
-Chat
+# Práctica 2 Aplicación distribuida híbrida.
+Diccionario
 
 ## Requerimientos
-`Python 3`
+`Python 3` `Docker CE`
 
 ## Modo de Uso
-* Abrir una terminal y ubicarse en la carpeta donde se clono este repositorio.
-* Correr el programa con el comando `python3 chat.py XXXX` donde **XXXX** representa el puerto donde se estará conectado.
+### Iniciar el contenedor
+
+1. Tener el servicio de `Docker CE` iniciado
+2. Abrir una terminal y ubicarse en la carpeta donde se clono este repositorio  
+3. Una vez estando posicionado en la carepta ejecuta el siguiente comando **`docker-compose up --build`**.  
+Al ejecutarlo se iniciara la imagen que contiene `Python` en el cual esta el servidor asi como el servicio de la Base de Datos de `Postgres`.
+
+### Iniciar la aplicación
 
 ## Notas
 Los comandos disponibles dentro de la aplicacion son:
@@ -17,5 +23,4 @@ se encuentra **name** en la lista de contactos se mandara un aviso, si **XXXX** 
 * `@contactos`Comando para poder ver la lista de contactos.
 * `@salir`Comando para salir de la aplicación.
 
-## Reglas de Comandos ##
-Si hay un chat activo el único comando disponible es `@desconecta`los demás estarán disponibles una vez finalice el chat. 
+
