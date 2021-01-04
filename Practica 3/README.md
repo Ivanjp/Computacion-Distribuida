@@ -1,4 +1,4 @@
-# Práctica 2 Aplicación distribuida híbrida.
+# Práctica 3 Aplicación distribuida híbrida.
 Diccionario
 
 ## Requerimientos
