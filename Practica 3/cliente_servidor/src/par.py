@@ -2,6 +2,12 @@ import time
 import threading
 import socket
 import sys
+import psycopg2
+
+AB1 = 'abcdefghijklm'
+AB2 = 'nopqrstuvwxyz'
+DATOS = "dbname=pruebaDic user=postgres password=Pumasunam540"
+
 class Par:
 
 	def __init__(self,puerto_s,puerto_cs,puerto_s_cliente,op = 1,rango = 1):
@@ -20,47 +26,111 @@ class Par:
 		else:
 			self.op = False
 		self.rango = rango
-		self.diccionario = {}
 
 	def agrega_palabra(self,palabra,significado):
-		if not palabra in self.diccionario.keys():
-			if self.rango == 1 and ord(palabra[0]) >= 97 and ord(palabra[0]) <= 109 :
-				self.diccionario.setdefault(palabra,significado)
+		#Crear Conexion
+		conexion = psycopg2.connect(DATOS)
+		#Crear cursor
+		cur = conexion.cursor()
+		cur.execute(f"SELECT * FROM Palabra WHERE nombre = '{palabra}' ")
+		aux = cur.fetchall()
+		pal = palabra.lower()
+		cop = pal[0:1]
+		
+		if not aux:
+			if self.rango == 1 and cop in AB1:
+				cur.execute(f"INSERT INTO Palabra(nombre, significado) VALUES ('{palabra}', '{significado}')")
+				conexion.commit()
 				print(":: Palabra agregada!")
-				return "Exito"
-			if self.rango == 0 and ord(palabra[0]) >= 110 and ord(palabra[0]) <= 122 :
-				self.diccionario.setdefault(palabra,significado)
+				return "Accion Exitosa"
+			if self.rango == 0 and cop in AB2:
+				cur.execute(f"INSERT INTO Palabra(nombre, significado) VALUES ('{palabra}', '{significado}')")
+				conexion.commit()
 				print(":: Palabra agregada!")
-				return "Exito"
+				return "Accion Exitosa"
 		print(":: La palabra ya existe, usa la funcion de edicion")
+		conexion.close()
 		return "Error"
 	def edita_palabra(self,palabra_anterior,palabra_nueva):
-		try:
-			if palabra_anterior in self.diccionario.keys():
-				significado = self.diccionario[palabra_anterior]
-				del self.diccionario[palabra_anterior] #eliminar clave y valor
-				if not palabra_nueva in self.diccionario.keys():
-					self.diccionario.setdefault(palabra_nueva,significado)
-					print(":: Palabra correctamente actualizada!")
-				else :
-					self.diccionario.setdefault(palabra_anterior,significado)
-					print(":: La palabra no se pudo actualizar!")
-		except Exception as err:
-			print(":: Hubo algun error inesperado!")
-			print(err)
+		#Crear Conexion
+		conexion = psycopg2.connect(DATOS)
+		#Crear cursor
+		cur = conexion.cursor()
+		cur.execute(f"SELECT * FROM Palabra WHERE nombre = '{palabra_anterior}' ")
+		aux = cur.fetchall()
+		pal = palabra_anterior.lower()
+		cop = pal[0:1]
+		if aux:
+			if self.rango == 1 and cop in AB1:
+				cur.execute(f"UPDATE palabra SET nombre = '{palabra_nueva}' WHERE nombre = '{palabra_anterior}'")
+				conexion.commit()
+				print(":: Palabra actualizada!")
+				return "Accion Exitosa"
+			if self.rango == 0 and cop in AB2:
+				cur.execute(f"UPDATE palabra SET nombre = '{palabra_nueva}' WHERE nombre = '{palabra_anterior}'")
+				conexion.commit()
+				print(":: Palabra actualizada!")
+				return "Accion Exitosa"
+		print(":: La palabra que quieres editar no existe")
+		conexion.close()
+		return "Error"
 	def edita_significado(self,palabra,nuevo_significado):
-		if palabra in self.diccionario.keys() :
-			self.diccionario[palabra] = nuevo_significado
-			print(":: Se ha editado el significado con exito!")
-			return
-		print(":: La palabra con el significado a cambiar no existe")
+		#Crear Conexion
+		conexion = psycopg2.connect(DATOS)
+		#Crear cursor
+		cur = conexion.cursor()
+		cur.execute(f"SELECT * FROM Palabra WHERE nombre = '{palabra}' ")
+		aux = cur.fetchall()
+		pal = palabra.lower()
+		cop = pal[0:1]
+		if aux:
+			if self.rango == 1 and cop in AB1:
+				cur.execute(f"UPDATE Palabra SET significado = '{nuevo_significado}' WHERE nombre = '{palabra}'")
+				conexion.commit()
+				print(":: Significado editado correctamente!")
+				return "Accion Exitosa"
+			if self.rango == 0 and cop in AB2:
+				cur.execute(f"UPDATE Palabra SET significado = '{nuevo_significado}' WHERE nombre = '{palabra}'")
+				conexion.commit()
+				print(":: Significado editado correctamente!")
+				return "Accion Exitosa"
+		print(":: La palabra cuyo significado quieres editar no existe")
+		conexion.close()
+		return "Error"
 
 	def obten_significado(self,palabra):
-		if palabra in self.diccionario.keys():
-			significado = self.diccionario[palabra]
-			print(":: Significado obtenido")
-			return significado
-		print(":: Palabra no existente")
+		#Crear Conexion
+		conexion = psycopg2.connect(DATOS)
+		#Crear cursor
+		cur = conexion.cursor()
+		cur.execute(f"SELECT * FROM Palabra WHERE nombre = '{palabra}' ")
+		aux = cur.fetchall()
+		pal = palabra.lower()
+		cop = pal[0:1]
+		if aux:
+			if self.rango == 1 and cop in AB1:
+				cur.execute(f"SELECT significado FROM Palabra WHERE nombre = '{palabra}' ")
+				print(aux[0][0])
+				return "Accion Exitosa"
+			if self.rango == 0 and cop in AB2:
+				cur.execute(f"SELECT significado FROM Palabra WHERE nombre = '{palabra}' ")
+				print(aux[0][0])
+				return "Accion Exitosa"
+		print(":: La palabra cuyo significado quieres obtener no existe")
+		conexion.close()
+		return "Error"
+	def obten_dic(self):
+		#Crear Conexion
+		conexion = psycopg2.connect(DATOS)
+		#Crear cursor
+		cur = conexion.cursor()
+		cur.execute(f"SELECT * FROM Palabra ORDER BY nombre ASC")
+		aux = cur.fetchall()
+		for nombre, significado in aux:
+			print(nombre,": ", significado)
+
+		conexion.close()
+	
 	def ejecuta_comando(self,comando):
 		arr = comando.split(" ")
 		#@p2p P instruccion parametros
@@ -125,7 +195,7 @@ class Par:
 				break
 			if len(info) == 0:
 				break
-			self.ejecuta_comando(info);
+			self.ejecuta_comando(info)
 
 	def espera_solo_servidor(self):
 		socket_servidor = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -137,7 +207,7 @@ class Par:
 		self.conexion_arq_cs, client_address = socket_servidor.accept()
 		while True:
 			self.info = self.conexion_arq_cs.recv(1024).decode("utf-8")
-			self.ejecuta_comando(self.info);
+			self.ejecuta_comando(self.info)
 			#se asigna a una variable global la variable info
 	def corre(self):
 		print(":: Inicializando servidores")
