@@ -11,7 +11,6 @@ def main():
     print("\t2 - Editar palabra")
     print("\t3 - Editar significado")
     print("\t4 - Obtener significado")
-    print("\t5 - Ver diccionario")
     print("\t0 - Salir")
 
 
@@ -26,28 +25,23 @@ while True:
         palabra = input("Ingresa tu palabra >> \n")
         significado = input("Ingresa el significado >> \n")
         sock.sendall((f"@p2p P ag {palabra} {significado}").encode())
-        print(sock.recv(1024).decode("utf-8"))
-        print("\n")
+        print(sock.recv(4096).decode("utf-8"))
     elif opcionMenu == "2":
         palabra_a = input("Ingresa la palabra que quieres modificar >> \n")
         palabra_n = input("Ingresa la nueva palabra >> \n")
-        sock.sendall((f"@p2p edp {palabra_a} {palabra_n}").encode())
-        print(sock.recv(1024).decode("utf-8"))
+        sock.sendall((f"@p2p P edp {palabra_a} {palabra_n}").encode())
+        print(sock.recv(4096).decode("utf-8"))
         print("\n")
     elif opcionMenu == "3":
         palabra = input("Ingresa la palabra cuyo significado quieres modificar >> \n")
         significado_n = input("Ingresa el nuevo significado >> \n")
-        sock.sendall((f"@p2p eds {palabra} {significado_n}").encode())
-        print(sock.recv(1024).decode("utf-8"))
+        sock.sendall((f"@p2p P eds {palabra} {significado_n}").encode())
+        print(sock.recv(4096).decode("utf-8"))
         print("\n")
     elif opcionMenu == "4":
         palabra = input("Ingresa la palabra >> \n")
-        sock.sendall((f"@p2p ob {palabra}").encode())
-        print(sock.recv(1024).decode("utf-8"))
-        print("\n")
-    elif opcionMenu == "5":
-        sock.sendall(("@p2p dic").encode())
-        print(sock.recv(1024).decode("utf-8"))
+        sock.sendall((f"@p2p P ob {palabra}").encode())
+        print(sock.recv(4096).decode("utf-8"))
         print("\n")
     elif opcionMenu == "0":
         break

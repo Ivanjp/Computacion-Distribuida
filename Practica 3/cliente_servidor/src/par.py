@@ -32,19 +32,19 @@ class Par:
 		conexion = psycopg2.connect(DATOS)
 		#Crear cursor
 		cur = conexion.cursor()
-		cur.execute(f"SELECT * FROM Palabra WHERE nombre = '{palabra}' ")
-		aux = cur.fetchall()
 		pal = palabra.lower()
+		cur.execute(f"SELECT * FROM Palabra WHERE nombre = '{pal}' ")
+		aux = cur.fetchall()
 		cop = pal[0:1]
 		
 		if not aux:
 			if self.rango == 1 and cop in AB1:
-				cur.execute(f"INSERT INTO Palabra(nombre, significado) VALUES ('{palabra}', '{significado}')")
+				cur.execute(f"INSERT INTO Palabra(nombre, significado) VALUES ('{pal}', '{significado}')")
 				conexion.commit()
 				print(":: Palabra agregada!")
 				return "Accion Exitosa"
 			if self.rango == 0 and cop in AB2:
-				cur.execute(f"INSERT INTO Palabra(nombre, significado) VALUES ('{palabra}', '{significado}')")
+				cur.execute(f"INSERT INTO Palabra(nombre, significado) VALUES ('{pal}', '{significado}')")
 				conexion.commit()
 				print(":: Palabra agregada!")
 				return "Accion Exitosa"
@@ -56,18 +56,18 @@ class Par:
 		conexion = psycopg2.connect(DATOS)
 		#Crear cursor
 		cur = conexion.cursor()
-		cur.execute(f"SELECT * FROM Palabra WHERE nombre = '{palabra_anterior}' ")
-		aux = cur.fetchall()
 		pal = palabra_anterior.lower()
+		cur.execute(f"SELECT * FROM Palabra WHERE nombre = '{pal}' ")
+		aux = cur.fetchall()
 		cop = pal[0:1]
 		if aux:
 			if self.rango == 1 and cop in AB1:
-				cur.execute(f"UPDATE palabra SET nombre = '{palabra_nueva}' WHERE nombre = '{palabra_anterior}'")
+				cur.execute(f"UPDATE palabra SET nombre = '{palabra_nueva.lower()}' WHERE nombre = '{pal}'")
 				conexion.commit()
 				print(":: Palabra actualizada!")
 				return "Accion Exitosa"
 			if self.rango == 0 and cop in AB2:
-				cur.execute(f"UPDATE palabra SET nombre = '{palabra_nueva}' WHERE nombre = '{palabra_anterior}'")
+				cur.execute(f"UPDATE palabra SET nombre = '{palabra_nueva.lower()}' WHERE nombre = '{pal}'")
 				conexion.commit()
 				print(":: Palabra actualizada!")
 				return "Accion Exitosa"
@@ -79,18 +79,18 @@ class Par:
 		conexion = psycopg2.connect(DATOS)
 		#Crear cursor
 		cur = conexion.cursor()
-		cur.execute(f"SELECT * FROM Palabra WHERE nombre = '{palabra}' ")
-		aux = cur.fetchall()
 		pal = palabra.lower()
+		cur.execute(f"SELECT * FROM Palabra WHERE nombre = '{pal}' ")
+		aux = cur.fetchall()
 		cop = pal[0:1]
 		if aux:
 			if self.rango == 1 and cop in AB1:
-				cur.execute(f"UPDATE Palabra SET significado = '{nuevo_significado}' WHERE nombre = '{palabra}'")
+				cur.execute(f"UPDATE Palabra SET significado = '{nuevo_significado}' WHERE nombre = '{pal}'")
 				conexion.commit()
 				print(":: Significado editado correctamente!")
 				return "Accion Exitosa"
 			if self.rango == 0 and cop in AB2:
-				cur.execute(f"UPDATE Palabra SET significado = '{nuevo_significado}' WHERE nombre = '{palabra}'")
+				cur.execute(f"UPDATE Palabra SET significado = '{nuevo_significado}' WHERE nombre = '{pal}'")
 				conexion.commit()
 				print(":: Significado editado correctamente!")
 				return "Accion Exitosa"
@@ -103,33 +103,20 @@ class Par:
 		conexion = psycopg2.connect(DATOS)
 		#Crear cursor
 		cur = conexion.cursor()
-		cur.execute(f"SELECT * FROM Palabra WHERE nombre = '{palabra}' ")
-		aux = cur.fetchall()
 		pal = palabra.lower()
+		cur.execute(f"SELECT significado FROM Palabra WHERE nombre = '{pal}' ")
+		aux = cur.fetchall()
 		cop = pal[0:1]
 		if aux:
 			if self.rango == 1 and cop in AB1:
-				cur.execute(f"SELECT significado FROM Palabra WHERE nombre = '{palabra}' ")
-				print(aux[0][0])
-				return "Accion Exitosa"
+				return aux[0][0]
 			if self.rango == 0 and cop in AB2:
-				cur.execute(f"SELECT significado FROM Palabra WHERE nombre = '{palabra}' ")
-				print(aux[0][0])
-				return "Accion Exitosa"
+				return aux[0][0]
 		print(":: La palabra cuyo significado quieres obtener no existe")
 		conexion.close()
 		return "Error"
-	def obten_dic(self):
-		#Crear Conexion
-		conexion = psycopg2.connect(DATOS)
-		#Crear cursor
-		cur = conexion.cursor()
-		cur.execute(f"SELECT * FROM Palabra ORDER BY nombre ASC")
-		aux = cur.fetchall()
-		for nombre, significado in aux:
-			print(nombre,": ", significado)
 
-		conexion.close()
+
 	
 	def ejecuta_comando(self,comando):
 		arr = comando.split(" ")
@@ -146,15 +133,42 @@ class Par:
 		elif "@p2p R ag" in comando :
 			mensaje = self.agrega_palabra(arr[3],arr[4])
 			self.conexion_cliente.sendall(mensaje.encode())
+		elif "@p2p P edp" in comando:
+			mensaje = self.edita_palabra(arr[3],arr[4])
+			if mensaje == "Error" :
+				#si es negativo le paso al consulta a otro nodo
+				co = "@p2p R edp " + arr[3] + " " + arr[4]
+				self.conexion_cliente.sendall(co.encode())#cambio
+			else :
+				self.conexion_arq_cs.sendall(mensaje.encode())
+		elif "@p2p R edp" in comando :
+			mensaje = self.edita_palabra(arr[3],arr[4])
+			self.conexion_cliente.sendall(mensaje.encode())
+		elif "@p2p P eds" in comando:
+			mensaje = self.edita_significado(arr[3],arr[4])
+			if mensaje == "Error" :
+				#si es negativo le paso al consulta a otro nodo
+				co = "@p2p R eds " + arr[3] + " " + arr[4]
+				self.conexion_cliente.sendall(co.encode())#cambio
+			else :
+				self.conexion_arq_cs.sendall(mensaje.encode())
+		elif "@p2p R eds" in comando :
+			mensaje = self.edita_significado(arr[3],arr[4])
+			self.conexion_cliente.sendall(mensaje.encode())
+		elif "@p2p P ob" in comando:
+			mensaje = self.obten_significado(arr[3])
+			if mensaje == "Error" :
+				#si es negativo le paso al consulta a otro nodo
+				co = "@p2p R ob " + arr[3]
+				self.conexion_cliente.sendall(co.encode())#cambio
+			else :
+				self.conexion_arq_cs.sendall(mensaje.encode())
+		elif "@p2p R ob" in comando :
+			mensaje = self.obten_significado(arr[3])
+			self.conexion_cliente.sendall(mensaje.encode())
 		else :
 			self.conexion_arq_cs.sendall(comando.encode())
 		self.info = None
-		'''
-		elif "@p2p edp" in comando: #edita palabra
-		elif "@p2p eds" in comando: #edita significado
-		elif "@p2p ob" in comando: #obtiene significado palabra
-		elif "@p2p dic" in comando: #obtiene diccionario completo 
-		'''
 
 	#Funcion que se usa para entablar la comunicacion con un servidor
 	def conecta_como_cliente(self):
@@ -188,7 +202,7 @@ class Par:
 				self.ejecuta_comando(self.info);
 			'''
 			try:
-				info = self.conexion_servidor.recv(1024).decode("utf-8")
+				info = self.conexion_servidor.recv(4096).decode("utf-8")
 				#si no es comando devolver respuesta a la red cliente servidor
 			except:
 				print(":: No hay conexion para leer mensajes.")
@@ -206,7 +220,7 @@ class Par:
 		#a la espera de conexion
 		self.conexion_arq_cs, client_address = socket_servidor.accept()
 		while True:
-			self.info = self.conexion_arq_cs.recv(1024).decode("utf-8")
+			self.info = self.conexion_arq_cs.recv(4096).decode("utf-8")
 			self.ejecuta_comando(self.info)
 			#se asigna a una variable global la variable info
 	def corre(self):
