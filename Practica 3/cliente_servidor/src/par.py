@@ -6,7 +6,7 @@ import psycopg2
 
 AB1 = 'abcdefghijklm'
 AB2 = 'nopqrstuvwxyz'
-DATOS = "dbname=pruebaDic user=postgres password=Pumasunam540"
+DATOS = "dbname=xxxx user=xxxx password=xxxx"
 
 class Par:
 
